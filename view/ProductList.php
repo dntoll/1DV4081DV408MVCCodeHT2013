@@ -45,7 +45,8 @@ class ProductList {
 	public function showProducts() {
 		$ret = "<h2>products</h2>";
 		foreach ($this->products->getProducts() as $key => $product) {
-			$ret .= "$key <a href='?". self::$buyProductURL ."=$key'>buy</a> <br/>";
+			$priceSEK = $product->getPriceSEK();
+			$ret .= "$key <a href='?". self::$buyProductURL ."=$key'>buy for $priceSEK :-</a> <br/>";
 		}
 
 		return "$ret " . $this->message;

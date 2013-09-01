@@ -9,11 +9,18 @@ class Product {
 	*/
 	private $code;
 
+	/**
+	* @var Integer price in $
+	*/
+	private $priceSEK;
+
 	/** 
 	* @param String code
 	*/
-	public function __construct($code) {
+	public function __construct($code, $priceSEK) {
 		$this->code = $code;
+		$this->priceSEK = $priceSEK;
+		
 	}
 
 	/**
@@ -29,4 +36,13 @@ class Product {
 	public function getName() {
 		return $this->code;
 	}
+
+	/**
+	* @return float
+	*/
+	public function getPriceSEK() {
+		return $this->priceSEK;
+	}
+
+	
 }

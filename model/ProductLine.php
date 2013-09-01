@@ -29,6 +29,12 @@ class ProductLine {
 		return $this->count;
 	}
 
+	/** @return Integer SEK
+	*/
+	public function getLineTotal() {
+		return $this->count * $this->product->getPriceSEK();
+	}
+
 	
 	public function add() {
 		$this->count++;

@@ -8,8 +8,8 @@ class ShoppingCartInteraction {
 	private $shoppingCartView;
 	private $shoppingCart;
 
-	public function __construct(\model\ShoppingCart $cart, \model\ProductList $products) {
-		$this->shoppingCartView = new \view\ShoppingCart($cart, $products);
+	public function __construct(\model\ShoppingCart $cart, \view\ShoppingCart $shoppingCartView) {
+		$this->shoppingCartView = $shoppingCartView; 
 		$this->shoppingCart = $cart;
 	}
 

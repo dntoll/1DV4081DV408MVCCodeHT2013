@@ -64,25 +64,52 @@ class ShoppingCart {
 	*  @return String HTML
 	*/
 	public function showCart() {
+
+		$lines = $this->getProductLines(true);
 		$ret = "<h2>ShoppingCart</h2>
-		<ol>";
+				$lines
+				$this->message";
+
+		
+
+		return $ret;
+	}
+
+	/**
+	*  @return String HTML
+	*/
+	public function showAsReceipt() {
+		$lines = $this->getProductLines(false);
+		return "<h2>Order</h2>
+				$lines
+				$this->message";
+	}
+
+	private function getProductLines($showLinks) {
+		$ret = "<ol>";
 
 		$productLines = $this->cart->getProductLines();
-
 		foreach ($productLines as $key => $productLine) {
 			$product = $productLine->getProduct();
 			$count = $productLine->getCount();
 			$productName = $product->getName();
 			$productCode = $product->getCode();
+			$priceSEK = $product->getPriceSEK();
+			$lineTotal = $productLine->getLineTotal();
 			$ret .= "
-					<li>$productName  $count
-						<a href='?".self::$addURL."=$productCode'> + </a>
-						<a href='?".self::$removeURL."=$productCode'> - </a>
-					</li>
-					";
+					<li>$productName  $count * $priceSEK = $lineTotal :-";
+			if ($showLinks) {					
+			$ret .= "		<a href='?".self::$addURL."=$productCode'> [+] </a>
+						<a href='?".self::$removeURL."=$productCode'> [-] </a>";
+			};
+			$ret .= "</li>";
 		}
-		$ret .= "</ol>$this->message";
+		$ret .= "</ol>";
 
+		$orderTotal = $this->cart->getTotalPrice();
+
+		$ret .= "Total: $orderTotal :-";
 		return $ret;
 	}
+	
 }

@@ -20,4 +20,21 @@ class ShopNavigation {
 		return isset($_GET[self::$payUrl]);
 		
 	}
+
+
+	/**
+	* @return String HTML
+	*/
+	public function getHTML() {
+		return "<a href='?" . self::$payUrl . "'>Pay</a> <a href='?'>Buy</a>";
+	}
+
+	/**
+	* @return String URL part
+	*/
+	public function getPaymentUrl() {
+		return self::$payUrl;
+	}
+
+	
 }

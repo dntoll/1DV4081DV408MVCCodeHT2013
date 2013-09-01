@@ -29,6 +29,9 @@ class ShoppingCart {
 		}
 	}
 
+	public function emptyCart() {
+		$this->productLines = array();
+	}
 
 
 	/**
@@ -37,6 +40,19 @@ class ShoppingCart {
 	public function getProductLines() {
 		return $this->productLines;
 	}
+
+	/**
+	* @return float SEK
+	*/
+	public function getTotalPrice() {
+		$total = 0.0;
+		foreach($this->productLines AS $productLine) {
+			$total += $productLine->getLineTotal();
+		}
+		return $total;
+	}
+
+	
 
 
 	/**

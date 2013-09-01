@@ -31,11 +31,20 @@ class DoShop {
 	private $shopNavigationView;
 		
 
-	public function __construct(\model\ShoppingCart $cart, \model\ProductList $products) {
-		$this->shoppingCartController = new ShoppingCartInteraction($cart, $products);
+	public function __construct(\model\ShoppingCart $cart, 
+								\model\ProductList $products,
+								\model\OrderHandler $orderHandler) {
+
+		$cartView = new \view\ShoppingCart($cart, $products);
+		$this->shoppingCartController = new ShoppingCartInteraction($cart, $cartView);
 		$this->buyProductsController = new BuyProducts($cart, $products);
-		$this->payForProducts = new PayForProducts();
 		$this->shopNavigationView = new \view\ShopNavigation();
+
+		$this->payForProducts = new PayForProducts($cart, 
+												   $orderHandler, 
+												   $this->shopNavigationView,
+												   $cartView);
+		
 
 		
 	}
@@ -46,16 +55,16 @@ class DoShop {
 	public function doShop() {
 		
 		
-
+		$navigations = $this->shopNavigationView->getHTML();
 		if ($this->shopNavigationView->isViewingProducts()) {
-			$productsList = $this->buyProductsController->doBuyProducts();
+			$productsList       = $this->buyProductsController->doBuyProducts();
 			$shoppingCartOutput = $this->shoppingCartController->doInteractWithShoppingCart();
-			return $productsList . $shoppingCartOutput;
+			return $navigations . $productsList . $shoppingCartOutput;
 		} else if ($this->shopNavigationView->isPaying()) {
 
-			$paymentOutput = $this->payForProducts->doPay();
+			$paymentOutput      = $this->payForProducts->doPay();
 			$shoppingCartOutput = $this->shoppingCartController->doInteractWithShoppingCart();
-			return $shoppingCartOutput . $paymentOutput;
+			return $navigations . $shoppingCartOutput . $paymentOutput;
 		}
 
 		throw new \Exception("should never be here");
